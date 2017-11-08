@@ -1,5 +1,7 @@
 import unittest
-from ..src import bot_api
+import sys
+sys.path.append('..')
+from src import bot_api, nav_tipbot
 
 class BotApiTests(unittest.TestCase):
     def test_GetUserBalance_WhenUserDoesNotExist_ThenReturn0(self):
