@@ -1,15 +1,11 @@
-import unittest
-import sys
-sys.path.append('..')
-from src import bot_api, nav_tipbot
+import pytest
+from ..app.bot_api import Database
 
-class BotApiTests(unittest.TestCase):
+class TestBotApiTests(object):
     def test_GetUserBalance_WhenUserDoesNotExist_ThenReturn0(self):
         testDatabase = Database('testDb.db')
         userName = "testUserName"
 
         result = testDatabase.GetUserBalance(userName)
-        self.assertEqual(result, 0)
-
-
-unittest.main()
+        assert result == 0
+        
