@@ -37,3 +37,12 @@ class Database:
         else:
             self.CreateUser(redditUsername)
             return self.GetUserBalance(redditUsername)
+
+    def SetUserBalance(self, redditUsername, amount):
+        entry = self.database.execute("SELECT * FROM Users WHERE redditUsername=?",(redditUsername,)).fetchone()
+        if entry:
+            self.database.execute("UPDATE Users SET balance=? WHERE redditUsername=?",(amount,redditUsername))
+            self.connection.commit()
+        else:
+            self.CreateUser(redditUsername)
+            self.SetUserBalance(redditUsername,amount)
