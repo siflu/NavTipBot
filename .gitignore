@@ -36,3 +36,4 @@ inc/
 
 
 praw.ini
+*.pyc
