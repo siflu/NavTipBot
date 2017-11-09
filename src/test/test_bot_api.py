@@ -43,7 +43,17 @@ class TestBotApiTests(object):
         result = testDatabase.GetUserBalance(userName)
         assert result == expectedBalance
 
+    def test_SubtractNavsFromBalance_WhenUserHas50NavsAndWantsToSubtract20Navs_ThenTheBalanceIs30(self):
+        self.CleanUp()
+        userName = "testUserName"
+        expectedBalance = 30
+        testDatabase = Database('testDb.db')
+        testDatabase.CreateUser(userName)
+        testDatabase.SetUserBalance(userName, 50)
+        testDatabase.SubtractNavsFromBalance(userName, 20)
+
+        result = testDatabase.GetUserBalance(userName)
+        assert result == expectedBalance
 
     def CleanUp(self):
         os.remove('testDb.db')
-        

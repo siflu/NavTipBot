@@ -54,6 +54,12 @@ class Database:
             balance = balance + amount
             self.SetUserBalance(redditUsername, balance)
 
+    def SubtractNavsFromBalance(self, redditUsername, amount):
+        user = self.GetUser(redditUsername)
+        if user:
+            balance = user[1]
+            balance = balance - amount
+            self.SetUserBalance(redditUsername, balance)
 
     def GetUser(self, redditUsername):
         user = self.database.execute("SELECT * FROM Users WHERE redditUsername = ?", (redditUsername,)).fetchone()
