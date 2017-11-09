@@ -31,5 +31,19 @@ class TestBotApiTests(object):
         result = testDatabase.GetUserBalance(userName)
         assert result == expectedBalance
 
+    def test_AddNavsToBalance_WhenUserHas10NavsAndWantsToAdd40MoreNavs_ThenTheBalanceIs50Navs(self):
+        self.CleanUp()
+        userName = "testUserName"
+        expectedBalance = 50
+        testDatabase = Database('testDb.db')
+        testDatabase.CreateUser(userName)
+        testDatabase.SetUserBalance(userName, 10)
+        testDatabase.AddNavsToBalance(userName, 40)
+
+        result = testDatabase.GetUserBalance(userName)
+        assert result == expectedBalance
+
+
     def CleanUp(self):
         os.remove('testDb.db')
+        

@@ -24,25 +24,40 @@ class Database:
         self.connection.commit()
     
     def CreateUser(self, redditUsername):
-        user = self.database.execute("SELECT * FROM Users WHERE redditUsername = ?", (redditUsername,)).fetchone()
+        user = self.GetUser(redditUsername)
         if not user:
             self.database.execute("INSERT INTO Users (redditUsername, balance) VALUES (?, ?)", (redditUsername, 0))
             self.connection.commit()
 
     def GetUserBalance(self, redditUsername):
-        entry = self.database.execute("SELECT * FROM Users WHERE redditUsername = ?",(redditUsername,)).fetchone()
-        if entry:
-            balance = entry[1]
+        user = self.GetUser(redditUsername)
+        if user:
+            balance = user[1]
             return balance
         else:
             self.CreateUser(redditUsername)
             return self.GetUserBalance(redditUsername)
 
     def SetUserBalance(self, redditUsername, amount):
-        entry = self.database.execute("SELECT * FROM Users WHERE redditUsername=?",(redditUsername,)).fetchone()
-        if entry:
-            self.database.execute("UPDATE Users SET balance=? WHERE redditUsername=?",(amount,redditUsername))
+        user = self.GetUser(redditUsername)
+        if user:
+            self.database.execute("UPDATE Users SET balance=? WHERE redditUsername = ?", (amount, redditUsername))
             self.connection.commit()
         else:
             self.CreateUser(redditUsername)
             self.SetUserBalance(redditUsername,amount)
+
+    def AddNavsToBalance(self, redditUsername, amount):
+        user = self.GetUser(redditUsername)
+        if user:
+            balance = user[1]
+            balance = balance + amount
+            self.SetUserBalance(redditUsername, balance)
+
+
+    def GetUser(self, redditUsername):
+        user = self.database.execute("SELECT * FROM Users WHERE redditUsername = ?", (redditUsername,)).fetchone()
+        return user
+
+
+
