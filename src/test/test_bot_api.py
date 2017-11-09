@@ -55,5 +55,33 @@ class TestBotApiTests(object):
         result = testDatabase.GetUserBalance(userName)
         assert result == expectedBalance
 
+    def test_DoesUserHaveEnoughNav_WhenUserDoesNotExist_ThenReturnFalse(self):
+        self.CleanUp()
+        userName = "testUserName"
+        testDatabase = Database('testDb.db')
+
+        result = testDatabase.DoesUserHaveEnoughNav(userName, 10)
+        assert result is False
+
+    def test_DoesUserHaveEnoughNav_WhenTheBalanceOfTheUserIsSmallerThanTheAmount_ThenReturnFalse(self):
+        self.CleanUp()
+        userName = "testUserName"
+        testDatabase = Database('testDb.db')
+        testDatabase.CreateUser(userName)
+        testDatabase.SetUserBalance(userName, 10)
+
+        result = testDatabase.DoesUserHaveEnoughNav(userName, 50)
+        assert result is False
+
+    def test_DoesUserHaveEnoughNav_WhenTheBalanceOfTheUserIsBiggerThanTheAmount_ThenReturnTrue(self):
+        self.CleanUp()
+        userName = "testUserName"
+        testDatabase = Database('testDb.db')
+        testDatabase.CreateUser(userName)
+        testDatabase.SetUserBalance(userName, 100)
+
+        result = testDatabase.DoesUserHaveEnoughNav(userName, 50)
+        assert result is True
+
     def CleanUp(self):
         os.remove('testDb.db')

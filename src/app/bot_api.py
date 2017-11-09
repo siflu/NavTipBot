@@ -61,6 +61,17 @@ class Database:
             balance = balance - amount
             self.SetUserBalance(redditUsername, balance)
 
+    def DoesUserHaveEnoughNav(self, redditUsername, amount):
+        user = self.GetUser(redditUsername)
+        if user:
+            balance = user[1]
+            if amount > balance:
+                return False
+            else:
+                return True
+        else:
+            return False
+
     def GetUser(self, redditUsername):
         user = self.database.execute("SELECT * FROM Users WHERE redditUsername = ?", (redditUsername,)).fetchone()
         return user
