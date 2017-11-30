@@ -1,6 +1,6 @@
 import pytest
 import os
-from ..app.databaseApi import Database
+from src.app.databaseApi import Database
 
 class TestDatabaseApiTests(object):
     def test_GetUserBalance_WhenUserDoesNotExist_ThenReturn0(self):
