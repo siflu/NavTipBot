@@ -34,6 +34,9 @@ inc/
 /pm_to_blib
 /*.zip
 
-
+/src/app/__pycache__
+/test/__pycache__
+.cache
+/venv
 praw.ini
 *.pyc
