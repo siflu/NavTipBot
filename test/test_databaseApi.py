@@ -3,6 +3,9 @@ import os
 from src.app.databaseApi import Database
 
 class TestDatabaseApiTests(object):
+    def setup(self):
+        testDatabase = Database('testDb.db')
+
     def test_GetUserBalance_WhenUserDoesNotExist_ThenReturn0(self):
         self.CleanUp()
         testDatabase = Database('testDb.db')
@@ -82,6 +85,15 @@ class TestDatabaseApiTests(object):
 
         result = testDatabase.DoesUserHaveEnoughNav(userName, 50)
         assert result is True
+
+    def test_AddCommentReplied(self):
+        self.CleanUp()
+        commentId = "testgu0"
+        testDatabase = Database('testDb.db')
+        testDatabase.AddCommentReplied(commentId)
+
+        result = testDatabase.CheckCommentsRepliedTo(commentId)
+        assert result[0][0] == commentId
 
     def CleanUp(self):
         os.remove('testDb.db')
