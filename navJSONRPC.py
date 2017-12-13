@@ -4,7 +4,7 @@ import json
 
 def main():
     #replace the <rpcusername> and <rpcpassword> with the ones you put in navcoin.conf file
-    url = "http://sloth:sloth@localhost:44444"
+    url = "http://<rpcusername>:<rpcpassword>@localhost:44444"
     headers = {'content-type': 'application/json'}
 
     payload = {
