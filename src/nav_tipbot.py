@@ -11,11 +11,7 @@ ping()
 a = Database()
 print(a.GetUserBalance("testUser"))
 
-reddit = praw.Reddit(client_id='',
-                     client_secret='',
-                     user_agent='',
-                     username='',
-                     password='')
+reddit = praw.Reddit()
 
 #check DB for comment ID
 con = sqlite3.connect('navtipbot.db')
@@ -80,6 +76,7 @@ while True:
 
     #withdraw/deposit logic branch
     for item in my_inbox.unread():
+        print(item)
         if item.subject.lower() == '!createaccount':
             if a.GetUser(item.author) is None:
                 a.CreateUser(item.author)
@@ -111,7 +108,12 @@ while True:
                 reddit.redditor(str(item.author)).message('Deposit', str(message))
                 a.DepositRequest(navAddress, comment.author, deposit_amount,0, False)
                 my_inbox.mark_read(item)
+
         else:
+            print('this '+ str(submission.author))
+            print('this ' + comment.id)
+            print(comment.author)
+            print(comment.body)
             my_inbox.mark_read(item)
 
     #Deposit confirmation branch

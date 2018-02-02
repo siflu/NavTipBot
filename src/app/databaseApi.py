@@ -14,13 +14,13 @@ class Database:
 
     def CreateDatabase(self):
         print("in CreateDatabase")
-        self.database.execute("CREATE TABLE IF NOT EXISTS Users (redditUsername TEXT PRIMARY KEY, balance INTEGER)")
+        self.database.execute("CREATE TABLE IF NOT EXISTS Users (redditUsername TEXT PRIMARY KEY, balance FLOAT)")
         self.connection.commit()
         self.database.execute("CREATE TABLE IF NOT EXISTS CommentsRepliedTo (commentId TEXT PRIMARY KEY)")
         self.connection.commit()
         self.database.execute("CREATE TABLE IF NOT EXISTS UsedAddresses (address TEXT PRIMARY KEY, redditUsername TEXT)")
         self.connection.commit()
-        self.database.execute("CREATE TABLE IF NOT EXISTS DepositRequests (address TEXT PRIMARY KEY, redditUsername TEXT, amount INTEGER,actual_amount INTEGER, confirmed BOOLEAN)")
+        self.database.execute("CREATE TABLE IF NOT EXISTS DepositRequests (address TEXT PRIMARY KEY, redditUsername TEXT, amount FLOAT,actual_amount FLOAT, confirmed BOOLEAN)")
         self.connection.commit()
 
 
@@ -33,8 +33,8 @@ class Database:
     def GetUserBalance(self, redditUsername):
         user = self.GetUser(redditUsername)
         if user:
-            balance = user[1]
-            return balance
+            balance = float(user[1])
+            return float(balance)
         else:
             self.CreateUser(redditUsername)
             return self.GetUserBalance(redditUsername)
@@ -94,7 +94,7 @@ class Database:
         self.connection.commit()
 
     def DepositRequest(self, navAddress, redditUsername, amount,actual_amount, confirmed):
-        self.database.execute("INSERT INTO DepositRequests VALUES (?,?,?,?,?)", (navAddress, str(redditUsername), amount, actual_amount,confirmed,))
+        self.database.execute("INSERT INTO DepositRequests VALUES (?,?,?,?,?)", (navAddress, str(redditUsername), int(amount), int(actual_amount),confirmed,))
         self.connection.commit()
 
     def CheckNavConfirmation(self):
@@ -104,5 +104,5 @@ class Database:
         return result
 
     def ConfirmDeposit(self,address,actual_amount):
-        self.database.execute("UPDATE DepositRequests SET (confirmed,actual_amount) VALUES=(?,?) WHERE = ?", (True,actual_amount, address))
+        self.database.execute("UPDATE DepositRequests SET confirmed = ?,  actual_amount = ? WHERE address = ?", (True, int(actual_amount), address))
         self.connection.commit()

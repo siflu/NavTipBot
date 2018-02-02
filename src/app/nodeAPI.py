@@ -1,18 +1,17 @@
 import requests
 import json
 
-#replace the <rpcusername> and <rpcpassword> with the ones you put in navcoin.conf file
-url = "http://<rpcusername>:<rpcpassword>@localhost:44444"
+#replace the <rpcuser> and <rpcpassword> with the ones you put in navcoin.conf file
+url = "http://rpcuser:rpcpassword@127.0.0.1:44444"
 headers = {'content-type': 'application/json'}
-wallet_pass = "<walletpw>"
+wallet_pass = ""
 
 def ping():
     payload = {
         "method": "ping",
         "jsonrpc": "2.0",
     }
-    response = requests.post(
-        url, data=json.dumps(payload), headers=headers).json()
+    response = requests.post(url, data=json.dumps(payload), headers=headers).json()
     print(response)
     return(response['result'])
 
@@ -41,7 +40,7 @@ def withdraw_nav(user_address, amount):
     
     payload = {
         "method": "sendtoaddress",
-        "params": [user_address, amount - 0.0001],
+        "params": [user_address, amount - 0.01],
         "jsonrpc": "2.0",
     }
     response2 = requests.post(
