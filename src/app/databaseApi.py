@@ -34,7 +34,7 @@ class Database:
         user = self.GetUser(redditUsername)
         if user:
             balance = float(user[1])
-            return float(balance)
+            return round(balance,10)
         else:
             self.CreateUser(redditUsername)
             return self.GetUserBalance(redditUsername)
